@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, OverlayTrigger, Popover } from "react-bootstrap";
+
+const ConditionsPopover = (
+  <Popover id="termsOfConditions-popover">
+    <Popover.Body>no ice cream will be delivered anyway</Popover.Body>
+  </Popover>
+);
 
 const ConditionsLabelName = (
   <span>
-    I agree to <span className="text-blue">terms of conditions</span>
+    I agree to{" "}
+    <OverlayTrigger overlay={ConditionsPopover} placement="right">
+      <span className="text-blue">terms of conditions</span>
+    </OverlayTrigger>
   </span>
 );
 

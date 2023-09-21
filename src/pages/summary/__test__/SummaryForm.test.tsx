@@ -1,4 +1,4 @@
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import SummaryForm from "../SummaryForm";
 import userEvent from "@testing-library/user-event";
 
@@ -42,4 +42,24 @@ test("button get back disabled if checkbox is unchecked again", async () => {
   expect(confirmButton).toBeEnabled();
   await user.click(checkbox);
   expect(confirmButton).toBeDisabled();
+});
+
+test("popover appears on hover", async () => {
+  render(<SummaryForm />);
+  const user = userEvent.setup();
+  const nullPopover = screen.queryByText(
+    /no ice cream will be delivered anyway/i,
+  );
+  expect(nullPopover).toBeNull();
+  const termsOfConditions = screen.getByText(/terms of conditions/i);
+  await user.hover(termsOfConditions);
+  const popover = screen.getByText(/no ice cream will be delivered anyway/i);
+  expect(popover).toBeInTheDocument();
+  await user.unhover(termsOfConditions);
+  await waitFor(() => {
+    const nullPopoverAfter = screen.queryByText(
+      /no ice cream will be delivered anyway/i,
+    );
+    expect(nullPopoverAfter).toBeNull();
+  });
 });
